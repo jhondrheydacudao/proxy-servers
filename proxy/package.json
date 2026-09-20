@@ -1,0 +1,12 @@
+{
+  "name": "anilove-proxy",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Same-origin proxy for Anilove release APIs",
+  "scripts": {
+    "start": "node server.js"
+  },
+  "engines": {
+    "node": ">=18"
+  }
+}
