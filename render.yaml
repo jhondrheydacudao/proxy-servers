@@ -1,0 +1,9 @@
+services:
+  - type: web
+    name: anilove-proxy
+    runtime: node
+    buildCommand: npm install
+    startCommand: npm start
+    envVars:
+      - key: UPDATE_API_BASE_URL
+        value: https://updater-servers.onrender.com/api/app-update/
