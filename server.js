@@ -157,7 +157,7 @@ const server = http.createServer((request, response) => {
     isReadRequest &&
     requestPath === '/api/app-update/latest'
   ) {
-    proxyRequest(request, response, 'latest', (release) => ({
+    proxyRequest(request, response, '/api/app-update/latest', (release) => ({
       ...release,
       downloadUrl: '/api/app-update/download',
     }));
@@ -168,7 +168,7 @@ const server = http.createServer((request, response) => {
     isReadRequest &&
     requestPath === '/api/app-update/download'
   ) {
-    proxyRequest(request, response, 'download');
+    proxyRequest(request, response, '/api/app-update/download');
     return;
   }
 
