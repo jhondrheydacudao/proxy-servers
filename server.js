@@ -5,10 +5,15 @@ const path = require('path');
 const { URL } = require('url');
 
 const port = Number(process.env.PORT || 10000);
+const upstreamApiKey = process.env.UPSTREAM_API_KEY;
 const upstreamBaseUrl =
   process.env.UPDATE_API_BASE_URL ||
   'https://updater-servers-production.up.railway.app/';
 const distDirectory = path.join(__dirname, 'dist');
+
+if (!upstreamApiKey) {
+  throw new Error('UPSTREAM_API_KEY must be set');
+}
 
 const contentTypes = {
   '.css': 'text/css; charset=utf-8',
@@ -38,6 +43,7 @@ function proxyRequest(request, response, upstreamPath, transformResponse) {
       method: request.method,
       headers: {
         Accept: request.headers.accept || '*/*',
+        Authorization: `Bearer ${upstreamApiKey}`,
         'User-Agent': 'Anilove proxy',
       },
     },
@@ -139,6 +145,13 @@ const server = http.createServer((request, response) => {
   const requestPath = new URL(request.url, 'http://localhost').pathname;
   const isReadRequest =
     request.method === 'GET' || request.method === 'HEAD';
+
+  if (isReadRequest && requestPath === '/health') {
+    response.statusCode = 200;
+    response.setHeader('Content-Type', 'text/plain; charset=utf-8');
+    response.end(request.method === 'HEAD' ? undefined : 'ok');
+    return;
+  }
 
   if (
     isReadRequest &&
