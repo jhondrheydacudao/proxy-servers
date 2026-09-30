@@ -7,7 +7,7 @@ const { URL } = require('url');
 const port = Number(process.env.PORT || 10000);
 const upstreamBaseUrl =
   process.env.UPDATE_API_BASE_URL ||
-  'https://updater-servers.onrender.com/api/app-update/';
+  'https://updater-servers-production.up.railway.app/';
 const distDirectory = path.join(__dirname, 'dist');
 
 const contentTypes = {
