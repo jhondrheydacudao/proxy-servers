@@ -11,10 +11,6 @@ const upstreamBaseUrl =
   'https://updater-servers-production.up.railway.app/';
 const distDirectory = path.join(__dirname, 'dist');
 
-if (!upstreamApiKey) {
-  throw new Error('UPSTREAM_API_KEY must be set');
-}
-
 const contentTypes = {
   '.css': 'text/css; charset=utf-8',
   '.html': 'text/html; charset=utf-8',
@@ -43,7 +39,9 @@ function proxyRequest(request, response, upstreamPath, transformResponse) {
       method: request.method,
       headers: {
         Accept: request.headers.accept || '*/*',
-        Authorization: `Bearer ${upstreamApiKey}`,
+        ...(upstreamApiKey
+          ? { Authorization: `Bearer ${upstreamApiKey}` }
+          : {}),
         'User-Agent': 'Anilove proxy',
       },
     },
